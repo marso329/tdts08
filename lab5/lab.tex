@@ -1,0 +1,87 @@
+\documentclass[a4paper,
+               %boxit,
+               %titlepage,   % separate title page
+               %refpage      % separate references
+              ]{jacow}
+
+\makeatletter%                           % test for XeTeX where the sequence is by default eps-> pdf, jpg, png, pdf, ...
+\ifboolexpr{bool{xetex}}                 % and the JACoW template provides JACpic2v3.eps and JACpic2v3.jpg which might generates errors
+ {\renewcommand{\Gin@extensions}{.pdf,%
+                    .png,.jpg,.bmp,.pict,.tif,.psd,.mac,.sga,.tga,.gif,%
+                    .eps,.ps,%
+                    }}{}
+\makeatother
+
+\ifboolexpr{bool{xetex} or bool{luatex}} % test for XeTeX/LuaTeX
+ {}                                      % input encoding is utf8 by default
+ {\usepackage[utf8]{inputenc}}           % switch to utf8
+
+\usepackage[USenglish]{babel}
+\usepackage{multirow}
+\usepackage[font=small,labelfont=bf,tableposition=top]{caption}
+\usepackage{blindtext}
+\usepackage{cuted}
+\usepackage{float}
+\usepackage[]{algorithm2e}
+\usepackage{multicol,caption}
+\usepackage{tikz}
+\usepackage{anyfontsize}
+\usepackage{listings}
+
+\newenvironment{Figure}
+  {\par\medskip\noindent\minipage{\linewidth}}
+  {\endminipage\par\medskip}
+
+\ifboolexpr{bool{jacowbiblatex}}%        % if BibLaTeX is used
+ {%
+  \addbibresource{jacow-test.bib}
+  \addbibresource{biblatex-examples.bib}
+ }{}
+
+\newcommand\SEC[1]{\textbf{\uppercase{#1}}}
+
+%%
+%%   Lengths for the spaces in the title
+%%   \setlength\titleblockstartskip{..}  %before title, default 3pt
+%%   \setlength\titleblockmiddleskip{..} %between title + author, default 1em
+%%   \setlength\titleblockendskip{..}    %afterauthor, default 1em
+
+%\copyrightspace %default 1cm. arbitrary size with e.g. \copyrightspace[2cm]
+
+% testing to fill the copyright space
+%\usepackage{eso-pic}
+%\AddToShipoutPictureFG*{\AtTextLowerLeft{\textcolor{red}{COPYRIGHTSPACE}}}
+
+\begin{document}
+
+
+\title{TDTS08 labratory assignment 5 - Multiprocessor and Multi-Computer Systems}
+
+\author{ M.E.~S\"{o}der\'{e}n\thanks{marso329@student.liu.se}, LiU, Linköping, Sweden,}
+
+\maketitle
+\begin{multicols}{2}
+%
+\begin{abstract}
+\noindent
+This report will review the computational model described in \cite{main} which has number 25 in the list of papers available. The system in question is a GPU (\textit{Graphics Processing Unit}) combined with a CPU (\textit{Central Processing Unit}). The article present a new model to balance the load between the GPU and the CPU in game engines, the model is called \textit{multi-thread uncoupled with GPGPU (General-Purpose computing on Graphics Processing Units)}. This article is interesting and was chosen because it is old (released 2007) and the field of GPGPU has expanded quite a lot since then and become more mainstream.
+
+\section{Overview of paper}
+\noindent
+The system is a GPU combined with a CPU, so it is a SIMD/MIMD system. They focus on how some computations cannot be directly ported from a CPU to a GPU since the GPU is best suited for vector operations. It explains relevant reasearch regarding doing rigid/elastic body simulations, collision detection, FEM (\textit{Finite Element Method}) and data mining can be carried out on GPUs using different available libraries such as Havok FX. It discusses that none of the available libraries performes load-balancing between the CPU and the GPU which \cite{main} wants to achieve. It achieves this by implementing a game loop with two threads, one that is running on the CPU and the other one that handles the GPGPU. By being able to dispatch event to both of the threads, the solution can achieve load balancing.   
+
+\end{abstract}
+
+\begin{thebibliography}{99}
+\bibitem{main} M. P. d. M. Zamith, E. W. G. Clua, A. Conci, A. Montenegro, P. A. Pagliosa and L. Valente, "Parallel processing between GPU and CPU: Concepts in a game architecture," Computer Graphics, Imaging and Visualisation (CGIV 2007), Bangkok, 2007, pp. 115-120.
+
+\bibitem{second} J. Cohen and M. Garland, "Novel Architectures: Solving Computational Problems with GPU Computing," in Computing in Science \& Engineering, vol. 11, no. 5, pp. 58-63, Sept.-Oct. 2009.
+\bibitem{third} C. Zou, C. Xia and G. Zhao, "Numerical Parallel Processing Based on GPU with CUDA Architecture," 2009 International Conference on Wireless Networks and Information Systems, Shanghai, 2009, pp. 93-96.
+
+
+\end{thebibliography}
+
+\end{multicols}
+
+
+\end{document}
